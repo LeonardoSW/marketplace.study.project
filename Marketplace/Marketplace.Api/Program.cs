@@ -1,15 +1,15 @@
 using Marketplace.Infra.Context;
 using Marketplace.Infra.CrossCutting;
-using Marketplace.Services.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add dependency injection.
 
 builder.Services.ConfigureDependencyInjection(builder.Configuration)
-                .ConfigureDbContexts();
+                .ConfigureDbContexts(builder.Configuration);
 
-builder.Services.AddHostedService<RabbitMqConsumeHandler>();
+//Add background service - Consumer RabbitMq
+//builder.Services.AddHostedService<RabbitMqConsumeHandler>();
 // Add services to the container.
 
 builder.Services.AddControllers();

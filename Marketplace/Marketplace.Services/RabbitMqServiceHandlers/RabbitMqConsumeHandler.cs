@@ -2,7 +2,6 @@
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client;
 using System.Text;
-using Marketplace.Domain.Interfaces.Services;
 using Marketplace.Domain.Models.Configurations;
 using Microsoft.Extensions.Options;
 
@@ -14,24 +13,14 @@ namespace Marketplace.Services.Handlers
         private readonly ConnectionFactory _factory;
         private readonly IConnection _connection;
         private readonly IModel _channel;
-        private readonly IUserService _userService;
 
-        public RabbitMqConsumeHandler(IUserService userService, IOptions<RabbitMqConfigModel> rabbitMqConfig)
+        public RabbitMqConsumeHandler(IOptions<RabbitMqConfigModel> rabbitMqConfig)
         {
             _config = rabbitMqConfig.Value;
-            _userService = userService;
-            _factory = new ConnectionFactory
-            {
-                HostName = _config.HostName
-            };
-
+            _factory = new ConnectionFactory { HostName = _config.HostName };
             _connection = _factory.CreateConnection();
             _channel = _connection.CreateModel();
-            _channel.QueueDeclare(queue: _config.Queue,
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
+            _channel.QueueDeclare(_config.Queue, false, false, false, null);
         }
 
 
@@ -44,11 +33,12 @@ namespace Marketplace.Services.Handlers
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
 
-                await _userService.QualquerCoisa(message);
-
+                Console.WriteLine(message);
+                await Task.CompletedTask;
             };
 
             _channel.BasicConsume(queue: _config.Queue, autoAck: true, consumer: consumer);
+            await Task.CompletedTask;
         }
     }
 }

@@ -1,22 +1,32 @@
-﻿using Marketplace.Domain.Interfaces.Services;
+﻿using Marketplace.Domain.Entities;
+using Marketplace.Domain.Interfaces.Repositories;
+using Marketplace.Domain.Interfaces.Services;
+using Marketplace.Domain.Models.Input;
+using Marketplace.Domain.Models.Response;
 
 namespace Marketplace.Services
 {
     public class UserService : IUserService
     {
-        public UserService()
-        { }
-
-        public async Task<bool> QualquerCoisa(string mensagem)
+        private readonly IUserRepository _userRepository;
+        public UserService(IUserRepository userRepository)
         {
-            Console.WriteLine("Manipular essa mensagem fazendo qualquer coisa");
-
-            return true;
+            _userRepository = userRepository;
         }
 
-        public Task SaveUserAsync()
+        public async Task<ResultModel<string>> RegisterUserAsync(NewUserInputModel input)
         {
-            throw new NotImplementedException();
+            var result = new ResultModel<string>();
+
+            var userExists = await _userRepository.CheckExistence(input.Cpf);
+            if (userExists)
+                return result.AddError(ServiceResources.UserAlreadExists);
+
+            var statusRegister = await _userRepository.RegisterNewUserAsync(new UserEntity(input));
+            if (statusRegister)
+                return result.AddResult(ServiceResources.UserRegistred);
+
+            return result.AddError(ServiceResources.UserRegisterFail);
         }
     }
 }
