@@ -61,6 +61,24 @@ namespace Marketplace.Services {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Ocorreu um erro ao cadastrar o produto, tente novamente em alguns instantes..
+        /// </summary>
+        internal static string ProductRegisterFail {
+            get {
+                return ResourceManager.GetString("ProductRegisterFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Producto cadastrado com sucesso!.
+        /// </summary>
+        internal static string ProductRegistred {
+            get {
+                return ResourceManager.GetString("ProductRegistred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Erro ao cadastrar, usuario já possúi um cadastro..
         /// </summary>
         internal static string UserAlreadExists {

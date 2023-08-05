@@ -21,11 +21,13 @@ namespace Marketplace.Infra.CrossCutting
         private static void ConfiguringServices(IServiceCollection services)
         {
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IProductService, ProductService>();
         }
 
         private static void ConfiguringRepositories(IServiceCollection services)
         {
-            services.AddScoped<IUserRepository, UserEntityRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
 
         private static void ConfiguringOptions(IServiceCollection services, IConfiguration configuration)

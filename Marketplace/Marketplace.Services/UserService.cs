@@ -14,7 +14,7 @@ namespace Marketplace.Services
             _userRepository = userRepository;
         }
 
-        public async Task<ResultModel<string>> RegisterUserAsync(NewUserInputModel input)
+        public async Task<ResultModel<string>> RegisterNewUserAsync(NewUserInputModel input)
         {
             var result = new ResultModel<string>();
 

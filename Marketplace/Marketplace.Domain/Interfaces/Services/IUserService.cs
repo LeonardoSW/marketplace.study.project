@@ -5,6 +5,6 @@ namespace Marketplace.Domain.Interfaces.Services
 {
     public interface IUserService
     {
-        Task<ResultModel<string>> RegisterUserAsync(NewUserInputModel input);
+        Task<ResultModel<string>> RegisterNewUserAsync(NewUserInputModel input);
     }
 }

@@ -12,6 +12,7 @@ namespace Marketplace.Infra.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductEntityConfiguration());
         }
     }
 }

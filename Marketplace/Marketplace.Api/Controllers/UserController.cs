@@ -18,8 +18,7 @@ namespace Marketplace.Api.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> NewUser(NewUserInputModel input)
-            => Return(await _userService.RegisterUserAsync(input));
-
+        public async Task<IActionResult> RegisterNewUser(NewUserInputModel input)
+            => Return(await _userService.RegisterNewUserAsync(input));
     }
 }

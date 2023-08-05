@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Infra.Repository
 {
-    public class UserEntityRepository : IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly DbSet<UserEntity> _dbSet;
         private readonly PostgresContext _context;
 
-        public UserEntityRepository(PostgresContext context)
+        public UserRepository(PostgresContext context)
         {
             _context = context;
             _dbSet = _context.Set<UserEntity>();
