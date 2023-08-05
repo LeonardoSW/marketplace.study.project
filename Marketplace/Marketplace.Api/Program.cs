@@ -6,10 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add dependency injection.
 
-builder.Services.ConfigureDependencyInjection()
+builder.Services.ConfigureDependencyInjection(builder.Configuration)
                 .ConfigureDbContexts();
 
-builder.Services.AddHostedService<RabbitMqHandler>();
+builder.Services.AddHostedService<RabbitMqConsumeHandler>();
 // Add services to the container.
 
 builder.Services.AddControllers();

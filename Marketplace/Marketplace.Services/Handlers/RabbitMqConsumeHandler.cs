@@ -3,53 +3,52 @@ using RabbitMQ.Client.Events;
 using RabbitMQ.Client;
 using System.Text;
 using Marketplace.Domain.Interfaces.Services;
+using Marketplace.Domain.Models.Configurations;
+using Microsoft.Extensions.Options;
 
 namespace Marketplace.Services.Handlers
 {
-    public class RabbitMqHandler : BackgroundService
+    public class RabbitMqConsumeHandler : BackgroundService
     {
-        private readonly IUserService _userService;
+        private readonly RabbitMqConfigModel _config;
         private readonly ConnectionFactory _factory;
         private readonly IConnection _connection;
         private readonly IModel _channel;
+        private readonly IUserService _userService;
 
-        public RabbitMqHandler(IUserService userService)
+        public RabbitMqConsumeHandler(IUserService userService, IOptions<RabbitMqConfigModel> rabbitMqConfig)
         {
+            _config = rabbitMqConfig.Value;
             _userService = userService;
             _factory = new ConnectionFactory
             {
-                HostName = "http://localhost/",
-                Port = 15672,
-                UserName = "guest",
-                Password = "guest",
-                VirtualHost = "/",
+                HostName = _config.HostName
             };
 
             _connection = _factory.CreateConnection();
             _channel = _connection.CreateModel();
+            _channel.QueueDeclare(queue: _config.Queue,
+                                 durable: false,
+                                 exclusive: false,
+                                 autoDelete: false,
+                                 arguments: null);
         }
 
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _channel.QueueDeclare(queue: "hello",
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
-
             var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += (model, ea) =>
+
+            consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
 
-                _userService.QualquerCoisa(message);
+                await _userService.QualquerCoisa(message);
 
             };
-            _channel.BasicConsume(queue: "hello",
-                                 autoAck: true,
-                                 consumer: consumer);
+
+            _channel.BasicConsume(queue: _config.Queue, autoAck: true, consumer: consumer);
         }
     }
 }
