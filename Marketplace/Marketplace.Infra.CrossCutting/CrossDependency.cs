@@ -3,6 +3,7 @@ using Marketplace.Domain.Interfaces.Services;
 using Marketplace.Domain.Models.Configurations;
 using Marketplace.Infra.Repository;
 using Marketplace.Services;
+using Marketplace.Services.RabbitMqServiceHandlers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +23,8 @@ namespace Marketplace.Infra.CrossCutting
         {
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddSingleton<IRabbitMqSender, RabbitMqSenderHandler>();
         }
 
         private static void ConfiguringRepositories(IServiceCollection services)

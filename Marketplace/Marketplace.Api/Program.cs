@@ -1,19 +1,19 @@
 using Marketplace.Infra.Context;
 using Marketplace.Infra.CrossCutting;
+using Marketplace.Services.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add dependency injection.
+// Add dependency injection to service provider.
 
 builder.Services.ConfigureDependencyInjection(builder.Configuration)
                 .ConfigureDbContexts(builder.Configuration);
 
-//Add background service - Consumer RabbitMq
-//builder.Services.AddHostedService<RabbitMqConsumeHandler>();
-// Add services to the container.
+//Add background service RabbitMq.
+builder.Services.AddHostedService<RabbitMqConsumeHandler>();
 
+// Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
