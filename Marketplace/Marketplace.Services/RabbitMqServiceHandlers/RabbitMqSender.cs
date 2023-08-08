@@ -1,6 +1,7 @@
 ﻿using Marketplace.Domain.Interfaces.Services;
 using Marketplace.Domain.Models.Configurations;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
 
@@ -22,10 +23,11 @@ namespace Marketplace.Services.RabbitMqServiceHandlers
             _channel.QueueDeclare(_config.Queue, false, false, false, null);
         }
 
-        public bool SendMessage(string message)
+        public bool SendMessage<T>(T input)
         {
             try
             {
+                var message = JsonConvert.SerializeObject(input);
                 _channel.BasicPublish("", _config.Queue, null, Encoding.Default.GetBytes(message));
                 return true;
             }

@@ -2,6 +2,6 @@
 {
     public interface IRabbitMqSender
     {
-        bool SendMessage(string message);
+        bool SendMessage<T>(T input);
     }
 }

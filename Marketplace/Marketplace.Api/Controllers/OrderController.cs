@@ -1,5 +1,6 @@
 ﻿using Marketplace.Api.Controllers.BaseControllers;
 using Marketplace.Domain.Interfaces.Services;
+using Marketplace.Domain.Models.Input;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.Api.Controllers
@@ -15,10 +16,9 @@ namespace Marketplace.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Teste()
+        public async Task<IActionResult> CreateNewOrder([FromBody] NewOrderInputModel input)
         {
-            _orderService.Teste("{\"Teste\":123");
-            return Ok();
+            return Return(await _orderService.CreateNewOrderAsync(input));
         }
     }
 }

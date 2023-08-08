@@ -9,13 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureDependencyInjection(builder.Configuration)
                 .ConfigureDbContexts(builder.Configuration);
 
-//Add background service RabbitMq.
-builder.Services.AddHostedService<RabbitMqConsumeHandler>();
-
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Add background service RabbitMq.
+builder.Services.AddHostedService<RabbitMqConsumeHandler>();
 
 var app = builder.Build();
 

@@ -7,7 +7,7 @@ namespace Marketplace.Infra.Context
     {
         public static IServiceCollection ConfigureDbContexts(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContextPool<PostgresContext>((provider, option) =>
+            services.AddDbContext<PostgresContext>((provider, option) =>
                 option.UseNpgsql(configuration.GetConnectionString("Postgres")));
 
             return services;

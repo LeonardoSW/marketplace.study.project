@@ -18,7 +18,7 @@ namespace Marketplace.Services
         {
             var result = new ResultModel<string>();
 
-            var userExists = await _userRepository.CheckExistence(input.Cpf);
+            var userExists = await _userRepository.CheckExistenceAsync(input.Cpf);
             if (userExists)
                 return result.AddError(ServiceResources.UserAlreadExists);
 

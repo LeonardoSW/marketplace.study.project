@@ -9,7 +9,7 @@ namespace Marketplace.Domain.Entities
         public string Description { get; private set; }
         public short Stock { get; private set; }
         public decimal Price { get; private set; }
-        public ProductStatus Status { get; private set; }
+        public ProductStatusEnum Status { get; private set; }
 
         public ProductEntity()
         { }
@@ -20,7 +20,7 @@ namespace Marketplace.Domain.Entities
             Description = description;
             Stock = stock;
             Price = price;
-            Status = ProductStatus.Active;
+            Status = ProductStatusEnum.Active;
         }
     }
 }

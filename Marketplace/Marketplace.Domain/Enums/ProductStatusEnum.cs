@@ -1,6 +1,6 @@
 ﻿namespace Marketplace.Domain.Enums
 {
-    public enum ProductStatus : short
+    public enum ProductStatusEnum : short
     {
         Inactive = 0,
         Active = 1

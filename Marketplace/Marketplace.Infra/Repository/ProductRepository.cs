@@ -31,7 +31,7 @@ namespace Marketplace.Infra.Repository
                 if (!string.IsNullOrWhiteSpace(name))
                     query = query.Where(x => x.Name.ToLower().Contains(name.ToLower()));
 
-                return await query.Where(x => x.Status == ProductStatus.Active).Select(x => new ProductOutputModel(x.Name, x.Description, x.Price, x.Stock))
+                return await query.Where(x => x.Status == ProductStatusEnum.Active).Select(x => new ProductOutputModel(x.Name, x.Description, x.Price, x.Stock))
                                   .ToListAsync();
             }
             catch

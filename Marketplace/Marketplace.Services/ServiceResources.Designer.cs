@@ -61,6 +61,24 @@ namespace Marketplace.Services {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Ocorreu um erro ao processar o pedido!.
+        /// </summary>
+        internal static string ErroProcessarPedido {
+            get {
+                return ResourceManager.GetString("ErroProcessarPedido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Seu pedido está em processamento!.
+        /// </summary>
+        internal static string PedidoEmProcessamento {
+            get {
+                return ResourceManager.GetString("PedidoEmProcessamento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Ocorreu um erro ao cadastrar o produto, tente novamente em alguns instantes..
         /// </summary>
         internal static string ProductRegisterFail {

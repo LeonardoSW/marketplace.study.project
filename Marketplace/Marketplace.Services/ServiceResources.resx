@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ErroProcessarPedido" xml:space="preserve">
+    <value>Ocorreu um erro ao processar o pedido!</value>
+  </data>
+  <data name="PedidoEmProcessamento" xml:space="preserve">
+    <value>Seu pedido está em processamento!</value>
+  </data>
   <data name="ProductRegisterFail" xml:space="preserve">
     <value>Ocorreu um erro ao cadastrar o produto, tente novamente em alguns instantes.</value>
   </data>

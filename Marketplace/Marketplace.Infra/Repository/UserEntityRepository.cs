@@ -16,7 +16,7 @@ namespace Marketplace.Infra.Repository
             _dbSet = _context.Set<UserEntity>();
         }
 
-        public async Task<bool> CheckExistence(string cpf)
+        public async Task<bool> CheckExistenceAsync(string cpf)
         {
             try
             {
