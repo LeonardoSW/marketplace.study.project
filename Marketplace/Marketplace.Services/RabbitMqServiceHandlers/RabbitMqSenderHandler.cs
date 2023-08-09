@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Marketplace.Services.RabbitMqServiceHandlers
 {
-    public class RabbitMqSenderHandler : IRabbitMqSender
+    public class RabbitMqSenderHandler : IRabbitMqSenderHandler
     {
         private readonly RabbitMqConfigModel _config;
         private readonly ConnectionFactory _factory;
@@ -29,6 +29,9 @@ namespace Marketplace.Services.RabbitMqServiceHandlers
             {
                 var message = JsonConvert.SerializeObject(input);
                 _channel.BasicPublish("", _config.Queue, null, Encoding.Default.GetBytes(message));
+
+                //desenvolver implementação do consumidor
+
                 return true;
             }
             catch

@@ -5,7 +5,6 @@ using Marketplace.Services.Handlers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add dependency injection to service provider.
-
 builder.Services.ConfigureDependencyInjection(builder.Configuration)
                 .ConfigureDbContexts(builder.Configuration);
 
@@ -15,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Add background service RabbitMq.
-builder.Services.AddHostedService<RabbitMqConsumeHandler>();
+builder.Services.AddHostedService<RabbitMqConsumerHandler>();
 
 var app = builder.Build();
 

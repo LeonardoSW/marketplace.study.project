@@ -6,37 +6,35 @@ using Marketplace.Domain.Models.Configurations;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Marketplace.Domain.Models.Message;
-using Marketplace.Domain.Interfaces.Repositories;
 using Marketplace.Domain.Entities;
+using Marketplace.Domain.Interfaces.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Marketplace.Services.Handlers
 {
-    public class RabbitMqConsumeHandler : BackgroundService
+    public class RabbitMqConsumerHandler : BackgroundService
     {
-        private readonly RabbitMqConfigModel _config;
+        private RabbitMqConfigModel _config;
         private readonly ConnectionFactory _factory;
         private readonly IConnection _connection;
         private readonly IModel _channel;
-        private readonly IOrderRepository _orderRepository;
+        private IOrderService _orderService;
 
-        public RabbitMqConsumeHandler(IOptions<RabbitMqConfigModel> rabbitMqConfig, IOrderRepository orderRepository)
+        public RabbitMqConsumerHandler(IServiceProvider serviceProvider)
         {
-            _config = rabbitMqConfig.Value;
+            CreateScope(serviceProvider);
             _factory = new ConnectionFactory { HostName = _config.HostName };
             _connection = _factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(_config.Queue, false, false, false, null);
-            _orderRepository = orderRepository;
         }
 
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var consumer = new EventingBasicConsumer(_channel);
 
             consumer.Received += async (model, ea) =>
             {
-
                 try
                 {
                     var body = ea.Body.ToArray();
@@ -44,8 +42,8 @@ namespace Marketplace.Services.Handlers
                     var objMessage = JsonConvert.DeserializeObject<ProcessNewOrderMessageModel>(message);
 
                     var newOrder = new OrderEntity();
+                    await _orderService.ProcessNewOrderAsync(newOrder);
 
-                    await _orderRepository.ProcessNewOrderAsync(newOrder);
                 }
                 catch (Exception)
                 {
@@ -56,7 +54,13 @@ namespace Marketplace.Services.Handlers
             };
 
             _channel.BasicConsume(queue: _config.Queue, autoAck: true, consumer: consumer);
-            await Task.CompletedTask;
+            return Task.CompletedTask;
+        }
+        private void CreateScope(IServiceProvider serviceProvider)
+        {
+            using IServiceScope scope = serviceProvider.CreateScope();
+            _orderService = scope.ServiceProvider.GetRequiredService<IOrderService>();
+            _config = scope.ServiceProvider.GetRequiredService<IOptions<RabbitMqConfigModel>>().Value;
         }
     }
 }

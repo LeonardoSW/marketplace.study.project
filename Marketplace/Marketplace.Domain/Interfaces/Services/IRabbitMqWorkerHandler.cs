@@ -1,6 +1,6 @@
 ﻿namespace Marketplace.Domain.Interfaces.Services
 {
-    public interface IRabbitMqSender
+    public interface IRabbitMqSenderHandler
     {
         bool SendMessage<T>(T input);
     }

@@ -24,7 +24,7 @@ namespace Marketplace.Infra.CrossCutting
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IOrderService, OrderService>();
-            services.AddSingleton<IRabbitMqSender, RabbitMqSenderHandler>();
+            services.AddSingleton<IRabbitMqSenderHandler, RabbitMqSenderHandler>();
         }
 
         private static void ConfiguringRepositories(IServiceCollection services)
