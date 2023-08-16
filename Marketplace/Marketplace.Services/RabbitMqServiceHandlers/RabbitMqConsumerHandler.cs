@@ -17,7 +17,6 @@ namespace Marketplace.Services.Handlers
         private readonly ConnectionFactory _factory;
         private readonly IConnection _connection;
         private readonly IModel _channel;
-        private IOrderService _orderService;
         private IServiceProvider _serviceProvider;
 
         public RabbitMqConsumerHandler(IServiceProvider serviceProvider)
