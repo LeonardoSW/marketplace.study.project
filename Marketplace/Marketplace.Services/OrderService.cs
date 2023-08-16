@@ -2,33 +2,59 @@
 using Marketplace.Domain.Interfaces.Repositories;
 using Marketplace.Domain.Interfaces.Services;
 using Marketplace.Domain.Models.Input;
+using Marketplace.Domain.Models.Message;
 using Marketplace.Domain.Models.Response;
 
 namespace Marketplace.Services
 {
     public class OrderService : IOrderService
     {
-        private readonly IRabbitMqSenderHandler _rabbitMqHandler;
+        private readonly IRabbitMqSenderHandler _sender;
         private readonly IUserRepository _userRepository;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderProductRepository _orderProductRepository;
 
-        public OrderService(IRabbitMqSenderHandler rabbitMqHandler, IUserRepository userRepository)
+        public OrderService(IRabbitMqSenderHandler rabbitMqHandler, IUserRepository userRepository, IOrderProductRepository orderProductRepository, IOrderRepository orderRepository)
         {
-            _rabbitMqHandler = rabbitMqHandler;
+            _sender = rabbitMqHandler;
             _userRepository = userRepository;
+            _orderProductRepository = orderProductRepository;
+            _orderRepository = orderRepository;
         }
 
         public async Task<ResultModel<string>> CreatePurchaseRequestAsync(NewOrderInputModel input)
         {
-            if (!await _userRepository.CheckExistenceAsync(input.Cpf) || input.IdsProducts.Any(x => x is 0))
+            if (!await _userRepository.CheckExistenceAsync(input.Cpf) || input.ProductIds.Any(x => x <= 0))
                 return new ResultModel<string>().AddError(ServiceResources.ErroProcessarPedido);
 
-            _rabbitMqHandler.SendMessage(input);
-            return new ResultModel<string>().AddResult(ServiceResources.PedidoEmProcessamento);
+            return _sender.SendMessage(input)
+                        ? new ResultModel<string>().AddResult(ServiceResources.ProcessingOrder)
+                        : new ResultModel<string>().AddError(ServiceResources.ErroProcessarPedido);
         }
 
-        public Task ProcessNewOrderAsync(OrderEntity input)
+        public async Task ProcessNewOrderAsync(ProcessNewOrderMessageModel message)
         {
-            throw new NotImplementedException();
+            var idUser = await _userRepository.GetDataUserByCpf(x => x.Id, message.Cpf);
+            var newOrder = new OrderEntity(idUser);
+            await _orderRepository.ProcessNewOrderAsync(newOrder);
+
+            await ProcessOrderProductsAsync(message.ProductIds, newOrder.OrderNumber);
+
+            await _orderRepository.CommitAsync();
+            await _orderProductRepository.CommitAsync();
         }
+
+        #region private methods
+        private async Task ProcessOrderProductsAsync(List<long> productIds, Guid orderNumber)
+        {
+            var orderProducts = new List<OrderProductEntity>();
+            productIds.ForEach(x =>
+            {
+                orderProducts.Add(new OrderProductEntity(orderNumber, x));
+            });
+
+            await _orderProductRepository.InsertNewOrderProductsAsync(orderProducts);
+        }
+        #endregion
     }
 }

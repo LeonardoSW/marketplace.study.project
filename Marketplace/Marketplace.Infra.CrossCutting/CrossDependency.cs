@@ -32,6 +32,7 @@ namespace Marketplace.Infra.CrossCutting
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderProductRepository, OrderProductRepository>();
         }
 
         private static void ConfiguringOptions(IServiceCollection services, IConfiguration configuration)

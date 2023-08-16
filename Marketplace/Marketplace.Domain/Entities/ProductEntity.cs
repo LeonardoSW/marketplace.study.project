@@ -4,7 +4,7 @@ namespace Marketplace.Domain.Entities
 {
     public class ProductEntity
     {
-        public long? Id { get; private set; }
+        public long Id { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
         public short Stock { get; private set; }

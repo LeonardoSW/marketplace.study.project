@@ -5,21 +5,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Infra.Repository
 {
-    public class OrderRepository : IOrderRepository
+    public class OrderProductRepository : IOrderProductRepository
     {
         private readonly PostgresContext _context;
-        private readonly DbSet<OrderEntity> _dbSet;
+        private readonly DbSet<OrderProductEntity> _dbSet;
 
-        public OrderRepository(PostgresContext context)
+        public OrderProductRepository(PostgresContext context)
         {
             _context = context;
-            _dbSet = _context.Set<OrderEntity>();
+            _dbSet = _context.Set<OrderProductEntity>();
         }
-
         public async Task CommitAsync()
             => await _context.SaveChangesAsync();
 
-        public async Task ProcessNewOrderAsync(OrderEntity newOrder)
-            => await _dbSet.AddAsync(newOrder);
+        public async Task InsertNewOrderProductsAsync(List<OrderProductEntity> products)
+        {
+            await _dbSet.AddRangeAsync(products);
+        }
+
     }
 }

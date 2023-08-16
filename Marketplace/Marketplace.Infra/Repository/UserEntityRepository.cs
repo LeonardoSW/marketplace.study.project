@@ -2,6 +2,7 @@
 using Marketplace.Domain.Interfaces.Repositories;
 using Marketplace.Infra.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Marketplace.Infra.Repository
 {
@@ -41,5 +42,8 @@ namespace Marketplace.Infra.Repository
                 return false;
             }
         }
+
+        public async Task<T> GetDataUserByCpf<T>(Expression<Func<UserEntity, T>> expression, string cpf)
+            => await _dbSet.Where(x => x.Cpf == cpf).Select(expression).FirstOrDefaultAsync();
     }
 }

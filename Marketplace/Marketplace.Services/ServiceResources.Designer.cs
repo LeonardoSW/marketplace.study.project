@@ -72,7 +72,7 @@ namespace Marketplace.Services {
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Seu pedido está em processamento!.
         /// </summary>
-        internal static string PedidoEmProcessamento {
+        internal static string ProcessingOrder {
             get {
                 return ResourceManager.GetString("PedidoEmProcessamento", resourceCulture);
             }

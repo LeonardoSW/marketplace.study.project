@@ -3,6 +3,6 @@
     public class NewOrderCommon
     {
         public string Cpf { get; set; }
-        public List<long> IdsProducts { get; set; }
+        public List<long> ProductIds { get; set; }
     }
 }

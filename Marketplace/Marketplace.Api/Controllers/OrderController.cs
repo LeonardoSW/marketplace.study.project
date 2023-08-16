@@ -16,9 +16,8 @@ namespace Marketplace.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNewOrder([FromBody] NewOrderInputModel input)
-        {
-            return Return(await _orderService.CreatePurchaseRequestAsync(input));
-        }
+        public async Task<IActionResult> CreatePurchaseRequest([FromBody] NewOrderInputModel input)
+            => Return(await _orderService.CreatePurchaseRequestAsync(input));
+
     }
 }

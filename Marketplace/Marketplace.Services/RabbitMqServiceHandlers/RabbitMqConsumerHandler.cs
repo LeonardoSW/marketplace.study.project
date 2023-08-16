@@ -6,7 +6,6 @@ using Marketplace.Domain.Models.Configurations;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Marketplace.Domain.Models.Message;
-using Marketplace.Domain.Entities;
 using Marketplace.Domain.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +18,7 @@ namespace Marketplace.Services.Handlers
         private readonly IConnection _connection;
         private readonly IModel _channel;
         private IOrderService _orderService;
+        private IServiceProvider _serviceProvider;
 
         public RabbitMqConsumerHandler(IServiceProvider serviceProvider)
         {
@@ -27,6 +27,7 @@ namespace Marketplace.Services.Handlers
             _connection = _factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(_config.Queue, false, false, false, null);
+            _serviceProvider = serviceProvider;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -37,12 +38,12 @@ namespace Marketplace.Services.Handlers
             {
                 try
                 {
-                    var body = ea.Body.ToArray();
-                    var message = Encoding.UTF8.GetString(body);
+                    var message = Encoding.UTF8.GetString(ea.Body.ToArray());
                     var objMessage = JsonConvert.DeserializeObject<ProcessNewOrderMessageModel>(message);
 
-                    var newOrder = new OrderEntity();
-                    await _orderService.ProcessNewOrderAsync(newOrder);
+                    using IServiceScope scope = _serviceProvider.CreateScope();
+                    var orderService = scope.ServiceProvider.GetRequiredService<IOrderService>();
+                    await orderService.ProcessNewOrderAsync(objMessage);
 
                 }
                 catch (Exception)
@@ -53,13 +54,12 @@ namespace Marketplace.Services.Handlers
                 await Task.CompletedTask;
             };
 
-            _channel.BasicConsume(queue: _config.Queue, autoAck: true, consumer: consumer);
+            _channel.BasicConsume(queue: _config.Queue, autoAck: false, consumer: consumer);
             return Task.CompletedTask;
         }
         private void CreateScope(IServiceProvider serviceProvider)
         {
             using IServiceScope scope = serviceProvider.CreateScope();
-            _orderService = scope.ServiceProvider.GetRequiredService<IOrderService>();
             _config = scope.ServiceProvider.GetRequiredService<IOptions<RabbitMqConfigModel>>().Value;
         }
     }

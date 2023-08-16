@@ -30,8 +30,6 @@ namespace Marketplace.Services.RabbitMqServiceHandlers
                 var message = JsonConvert.SerializeObject(input);
                 _channel.BasicPublish("", _config.Queue, null, Encoding.Default.GetBytes(message));
 
-                //desenvolver implementação do consumidor
-
                 return true;
             }
             catch

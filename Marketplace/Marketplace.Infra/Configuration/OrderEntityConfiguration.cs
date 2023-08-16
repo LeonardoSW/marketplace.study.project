@@ -15,9 +15,10 @@ namespace Marketplace.Infra.Configuration
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasColumnName("id").HasColumnType("int8");
-            builder.Property(x => x.CreateDate).HasColumnName("createdate").HasColumnType("timestamp");
-            builder.Property(x => x.OrderNumber).HasColumnName("ordernumber").HasColumnType("uuid");
-            builder.Property(x => x.Status).HasColumnName("status").HasColumnType("numeric(1)");
+            builder.Property(x => x.CreateDate).HasColumnName("createdate").HasColumnType("timestamp").IsRequired();
+            builder.Property(x => x.OrderNumber).HasColumnName("ordernumber").HasColumnType("uuid").IsRequired();
+            builder.Property(x => x.Status).HasColumnName("status").HasColumnType("numeric(1)").IsRequired();
+            builder.Property(x => x.IdUser).HasColumnName("iduser").HasColumnType("int8").IsRequired();
         }
     }
 }

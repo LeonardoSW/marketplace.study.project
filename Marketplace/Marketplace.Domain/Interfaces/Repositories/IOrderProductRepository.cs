@@ -2,9 +2,9 @@
 
 namespace Marketplace.Domain.Interfaces.Repositories
 {
-    public interface IOrderRepository
+    public interface IOrderProductRepository
     {
         Task CommitAsync();
-        Task ProcessNewOrderAsync(OrderEntity newOrder);
+        Task InsertNewOrderProductsAsync(List<OrderProductEntity> products);
     }
 }
