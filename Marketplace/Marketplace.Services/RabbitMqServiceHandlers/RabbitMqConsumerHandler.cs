@@ -47,7 +47,11 @@ namespace Marketplace.Services.Handlers
                 }
                 catch (Exception)
                 {
-                    _channel.BasicNack(0, false, true);
+                    _channel.BasicNack(ea.DeliveryTag, false, true);
+                }
+                finally
+                {
+                    _channel.BasicAck(ea.DeliveryTag, false);
                 }
 
                 await Task.CompletedTask;

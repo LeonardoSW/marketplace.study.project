@@ -120,8 +120,8 @@
   <data name="ErroProcessarPedido" xml:space="preserve">
     <value>Ocorreu um erro ao processar o pedido!</value>
   </data>
-  <data name="PedidoEmProcessamento" xml:space="preserve">
-    <value>Seu pedido está em processamento!</value>
+  <data name="ProcessingOrder" xml:space="preserve">
+    <value>Seu pedido {0} está em processamento!</value>
   </data>
   <data name="ProductRegisterFail" xml:space="preserve">
     <value>Ocorreu um erro ao cadastrar o produto, tente novamente em alguns instantes.</value>

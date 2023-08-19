@@ -70,11 +70,11 @@ namespace Marketplace.Services {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Seu pedido está em processamento!.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Seu pedido {0} está em processamento!.
         /// </summary>
         internal static string ProcessingOrder {
             get {
-                return ResourceManager.GetString("PedidoEmProcessamento", resourceCulture);
+                return ResourceManager.GetString("ProcessingOrder", resourceCulture);
             }
         }
         

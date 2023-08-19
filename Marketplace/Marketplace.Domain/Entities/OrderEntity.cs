@@ -13,11 +13,11 @@ namespace Marketplace.Domain.Entities
         public OrderEntity()
         { }
 
-        public OrderEntity(long idUser)
+        public OrderEntity(long idUser, Guid orderNumber)
         {
             IdUser = idUser;
             CreateDate = DateTime.Now;
-            OrderNumber = Guid.NewGuid();
+            OrderNumber = orderNumber;
             Status = OrderStatusEnum.EmProcessamento;
         }
 

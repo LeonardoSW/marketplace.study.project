@@ -27,15 +27,22 @@ namespace Marketplace.Services
             if (!await _userRepository.CheckExistenceAsync(input.Cpf) || input.ProductIds.Any(x => x <= 0))
                 return new ResultModel<string>().AddError(ServiceResources.ErroProcessarPedido);
 
-            return _sender.SendMessage(input)
-                        ? new ResultModel<string>().AddResult(ServiceResources.ProcessingOrder)
+            var orderMessageModel = new ProcessNewOrderMessageModel
+            {
+                Cpf = input.Cpf,
+                OrderNumber = Guid.NewGuid(),
+                ProductIds = input.ProductIds
+            };
+
+            return _sender.SendMessage(orderMessageModel)
+                        ? new ResultModel<string>().AddResult(string.Format(ServiceResources.ProcessingOrder, $"'{orderMessageModel.OrderNumber}'"))
                         : new ResultModel<string>().AddError(ServiceResources.ErroProcessarPedido);
         }
 
         public async Task ProcessNewOrderAsync(ProcessNewOrderMessageModel message)
         {
             var idUser = await _userRepository.GetDataUserByCpf(x => x.Id, message.Cpf);
-            var newOrder = new OrderEntity(idUser);
+            var newOrder = new OrderEntity(idUser, message.OrderNumber);
             await _orderRepository.ProcessNewOrderAsync(newOrder);
 
             await ProcessOrderProductsAsync(message.ProductIds, newOrder.OrderNumber);
