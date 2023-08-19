@@ -35,7 +35,5 @@ foreach (var id in idsProduct)
         Console.WriteLine("");
 
         await Task.Delay(2000);
-
-
     };
 }
