@@ -17,7 +17,7 @@ namespace Marketplace.Services.RabbitMqServiceHandlers
         public RabbitMqSenderHandler(IOptions<RabbitMqConfigModel> rabbitMqConfig)
         {
             _config = rabbitMqConfig.Value;
-            _factory = new ConnectionFactory { HostName = _config.HostName };
+            _factory = new ConnectionFactory() { HostName = _config.HostName };
             _connection = _factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(_config.Queue, false, false, false, null);

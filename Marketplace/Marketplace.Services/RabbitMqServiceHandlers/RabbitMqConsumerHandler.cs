@@ -26,7 +26,7 @@ namespace Marketplace.Services.Handlers
             _connection = _factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(_config.Queue, false, false, false, null);
-            _channel.BasicQos(0, 2, false);
+            _channel.BasicQos(0, 15, false);
             _serviceProvider = serviceProvider;
         }
 
@@ -41,12 +41,16 @@ namespace Marketplace.Services.Handlers
                     var message = Encoding.UTF8.GetString(ea.Body.ToArray());
                     var objMessage = JsonConvert.DeserializeObject<ProcessNewOrderMessageModel>(message);
 
+                    if (string.IsNullOrWhiteSpace(objMessage.Cpf))
+                        return;
+
+                    //"Why create a new scope per message?" to avoid concurrent use of instances of the database.
                     using IServiceScope scope = _serviceProvider.CreateScope();
                     var orderService = scope.ServiceProvider.GetRequiredService<IOrderService>();
-                    await orderService.ProcessNewOrderAsync(objMessage);
 
+                    await orderService.ProcessNewOrderAsync(objMessage);
                 }
-                catch (Exception)
+                catch
                 {
                     _channel.BasicNack(ea.DeliveryTag, false, true);
                 }
