@@ -26,6 +26,7 @@ namespace Marketplace.Services.Handlers
             _connection = _factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(_config.Queue, false, false, false, null);
+            _channel.BasicQos(0, 2, false);
             _serviceProvider = serviceProvider;
         }
 
