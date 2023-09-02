@@ -32,7 +32,7 @@ jobs:
 
     - name: Zip Package
       run: |
-        cd ${{ github.workspace }}/out
+        cd ${{ github.workspace }}//Marketplace/Marketplace.Api/out
         zip -r ${{ github.workspace }}/out.zip *
 
     - name: Deploy to EB
