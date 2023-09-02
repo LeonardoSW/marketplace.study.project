@@ -20,8 +20,8 @@ namespace Marketplace.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(ResultModel<ProductOutputModel>), (int)HttpStatusCode.OK)]
-        public IActionResult GetProductByIdAsync([FromQuery] long id)
-            => Return(_productService.GetProductByIdAsync(id)); //Only test to prove performance with async
+        public async Task<IActionResult> GetProductByIdAsync([FromQuery] long id)
+            => Return(await _productService.GetProductByIdAsync(id));
 
         [HttpGet("filter")]
         [ProducesResponseType(typeof(ResultModel<List<ProductOutputModel>>), (int)HttpStatusCode.OK)]

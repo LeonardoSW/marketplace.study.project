@@ -16,8 +16,8 @@ namespace Marketplace.Services
             _productRepository = productRepository;
         }
 
-        public ResultModel<ProductOutputModel> GetProductByIdAsync(long id)
-            => new ResultModel<ProductOutputModel>().AddResult(_productRepository.GetProductByIdAsync(id));
+        public async Task<ResultModel<ProductOutputModel>> GetProductByIdAsync(long id)
+            => new ResultModel<ProductOutputModel>().AddResult(await _productRepository.GetProductByIdAsync(id));
 
         public async Task<ResultModel<List<ProductOutputModel>>> GetProductListByNameAsync(string nameProduct)
             => new ResultModel<List<ProductOutputModel>>().AddResult(await _productRepository.GetProductListByNameAsync(nameProduct));

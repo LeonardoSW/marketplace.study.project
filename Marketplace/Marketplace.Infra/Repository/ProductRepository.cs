@@ -18,10 +18,10 @@ namespace Marketplace.Infra.Repository
             _dbSet = _context.Set<ProductEntity>();
         }
 
-        public ProductOutputModel GetProductByIdAsync(long id)
-            => _dbSet.Where(x => x.Id == id)
+        public async Task<ProductOutputModel> GetProductByIdAsync(long id)
+            => await _dbSet.Where(x => x.Id == id)
                            .Select(x => new ProductOutputModel(x.Name, x.Description, x.Price, x.Stock))
-                           .FirstOrDefault(); //Only test to prove performance with async
+                           .FirstOrDefaultAsync();
 
         public async Task<List<ProductOutputModel>> GetProductListByNameAsync(string name)
         {
