@@ -28,12 +28,12 @@ jobs:
       run: dotnet test --no-build --verbosity normal
 
     - name: Publish
-      run: dotnet publish -c Release -o '${{ github.workspace }}/Marketplace/Marketplace.Api/out'
+      run: dotnet publish -c Release -o '${{ github.workspace }}/out'
 
     - name: Zip Package
       run: |
         cd ${{ github.workspace }}/out
-        zip -r ${{ github.workspace }}/Marketplace/Marketplace.Api/out.zip *
+        zip -r ${{ github.workspace }}/out.zip *
 
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v21
@@ -44,4 +44,4 @@ jobs:
         environment_name: production
         version_label: ${{ github.run_id }}
         region: us-east-2
-        deployment_package: ${{ github.workspace }}/Marketplace/Marketplace.Api/out.zip
+        deployment_package: ${{ github.workspace }}/out.zip
