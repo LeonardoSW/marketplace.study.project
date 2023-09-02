@@ -1,6 +1,5 @@
 using Marketplace.Infra.Context;
 using Marketplace.Infra.CrossCutting;
-using Marketplace.Services.Handlers;
 using FluentValidation.AspNetCore;
 using Marketplace.Api.FluentValidation;
 using FluentValidation;
@@ -17,7 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Add background service RabbitMq.
-builder.Services.AddHostedService<RabbitMqConsumerHandler>();
+//builder.Services.AddHostedService<RabbitMqConsumerHandler>();
 
 //Add fluent validation
 builder.Services.AddFluentValidationAutoValidation();
