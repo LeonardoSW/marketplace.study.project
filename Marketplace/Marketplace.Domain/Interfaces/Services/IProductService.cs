@@ -6,7 +6,7 @@ namespace Marketplace.Domain.Interfaces.Services
 {
     public interface IProductService
     {
-        Task<ResultModel<ProductOutputModel>> GetProductByIdAsync(long id);
+        ResultModel<ProductOutputModel> GetProductByIdAsync(long id);
         Task<ResultModel<List<ProductOutputModel>>> GetProductListByNameAsync(string nameProduct);
         Task<ResultModel<string>> RegisterNewProductAsync(NewProductInputModel input);
     }
