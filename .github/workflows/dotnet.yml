@@ -19,7 +19,9 @@ jobs:
         dotnet-version: 6.0.x
     
     - name: Restore dependencies
-      run: dotnet restore
+      run: |
+        cd '${{ github.workspace }}/Marketplace/Marketplace.Api'
+        dotnet restore
     
     - name: Build
       run: |
@@ -27,7 +29,9 @@ jobs:
         dotnet build --no-restore
     
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: |
+        cd '${{ github.workspace }}/Marketplace/Marketplace.Api'
+        dotnet test --no-build --verbosity normal
 
     - name: Publish
       run: dotnet publish -c Release -o '${{ github.workspace }}/out'
