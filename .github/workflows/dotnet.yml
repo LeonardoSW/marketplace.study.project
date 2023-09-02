@@ -22,7 +22,9 @@ jobs:
       run: dotnet restore
     
     - name: Build
-      run: dotnet build --no-restore
+      run: |
+        cd '${{ github.workspace }}/Marketplace/Marketplace.Api'
+        dotnet build --no-restore
     
     - name: Test
       run: dotnet test --no-build --verbosity normal
@@ -32,7 +34,7 @@ jobs:
 
     - name: Zip Package
       run: |
-        cd ${{ github.workspace }}//Marketplace/Marketplace.Api/out
+        cd ${{ github.workspace }}/out
         zip -r ${{ github.workspace }}/out.zip *
 
     - name: Deploy to EB
