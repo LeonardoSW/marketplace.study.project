@@ -36,7 +36,7 @@ jobs:
     - name: Publish
       run: |
         cd '${{ github.workspace }}/Marketplace/Marketplace.Api'
-        dotnet publish -c Release -o '${{ github.workspace }}/Marketplace/Marketplace.Api/out'
+        dotnet publish -c Release -o '${{ github.workspace }}/out'
 
     - name: Zip Package
       run: |
