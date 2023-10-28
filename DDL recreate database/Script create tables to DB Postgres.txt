@@ -1,0 +1,44 @@
+====================================================================
+================== CREATE TABLES TO THIS PROJECT ===================
+====================================================================
+
+-- public.orderproduct definition
+CREATE TABLE public.orderproduct (
+	id int8 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1 NO CYCLE),
+	ordernumber uuid NOT NULL,
+	idproduct int8 NOT NULL);
+
+====================================================================
+
+-- public.orders definition
+
+CREATE TABLE public.orders (
+	id int8 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1 NO CYCLE),
+	createdate timestamp NOT NULL,
+	ordernumber uuid NOT NULL,
+	status numeric(1) NOT NULL DEFAULT 0,
+	iduser int8 NOT NULL);
+
+====================================================================
+
+-- public.products definition
+
+CREATE TABLE public.products (
+	id int8 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1 NO CYCLE),
+	"name" varchar(100) NOT NULL,
+	stock int2 NOT NULL DEFAULT 0,
+	price money NOT NULL DEFAULT 0,
+	description varchar(255) NULL,
+	status numeric(1) NOT NULL DEFAULT 0);
+
+====================================================================
+
+-- public.users definition
+
+CREATE TABLE public.users (
+	id int8 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1 NO CYCLE),
+	"name" varchar(35) NOT NULL,
+	email varchar NULL,
+	telephone varchar(15) NULL,
+	cpf varchar(15) NULL,
+	CONSTRAINT newtable_pkey PRIMARY KEY (id));
